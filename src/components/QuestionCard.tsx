@@ -5,8 +5,8 @@ type Props = {
   answers: string[];
   callback: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   userAnswer: any;
-  questionNr: string;
-  totalQuestions: string;
+  questionNr: number;
+  totalQuestions: number;
 };
 
 const QuestionCard: React.FC<Props> = ({
