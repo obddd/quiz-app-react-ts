@@ -42,6 +42,19 @@ export const Wrapper = styled.div`
         margin: 20px;
     }
 
+    .startbox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10%;
+    }
+
+    .select {
+        width: 300px;
+        height: 35px;
+        
+    }
+    
     .start, .next {
         cursor: pointer;
         background: linear-gradient(180deg, #fff, #ffcc91);
@@ -56,5 +69,6 @@ export const Wrapper = styled.div`
     .start {
         max-width: 200px
     }
+
 
 `

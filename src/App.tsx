@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { fetchQuizQuestions } from './api';
+import React, { useState, useEffect } from 'react';
+import { fetchQuizQuestions, fetchCategory } from './api';
 //components
 import QuestionCard from './components/QuestionCard';
 //types
@@ -14,9 +14,17 @@ export type AnswerState = {
   correct: boolean;
 };
 
+type CategoryState = {
+  id: number;
+  name: string
+};
+
 const TOTAL_QUESTIONS = 10;
+const RANDOM_ID = Math.floor(Math.random() * (32 - 9 + 1)) + 9
 
 const App = () => {
+  const [categories, setCategories] = useState<CategoryState[]>([]);
+  const [category, setCategory] = useState<number>(RANDOM_ID);
   const [loading, setLoading] = useState<boolean>(false);
   const [questions, setQuestions] = useState<QuestionState[]>([]);
   const [number, setNumber] = useState<number>(0);
@@ -24,12 +32,20 @@ const App = () => {
   const [score, setScore] = useState<number>(0);
   const [gameOver, setGameOver] = useState<boolean>(true);
 
+  useEffect(() => {
+    const type = async () => {
+      setCategories(await fetchCategory());
+    };
+    type();
+  }, [setCategories]);
+
   const startTrivia = async () => {
     setLoading(true);
     setGameOver(false);
     const newQuestions = await fetchQuizQuestions(
       TOTAL_QUESTIONS,
-      Difficulty.EASY
+      Difficulty.EASY,
+      category
     );
     setQuestions(newQuestions);
     setScore(0);
@@ -66,6 +82,10 @@ const App = () => {
     }
   };
 
+  const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    let {key} = JSON.parse(event.target.value)
+    setCategory(key);
+  };
   return (
     <>
       <GlobalStyle />
@@ -73,7 +93,19 @@ const App = () => {
         <h1>Quiz App using React with Typescript</h1>
 
         {gameOver || userAnswer.length === TOTAL_QUESTIONS ? (
-          <button className='start' onClick={startTrivia}>Start</button>
+          <div className="startbox">
+            <select className="select" onChange={onSelect}>
+              <option value="">Select Topic</option>
+              {categories.map(({id, name}) => (
+                <option key={id} value={JSON.stringify({key:id, value:name})}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            <button className="start" onClick={startTrivia}>
+              Start
+            </button>
+          </div>
         ) : null}
 
         {!gameOver ? <p className="score">Score: {score}</p> : null}

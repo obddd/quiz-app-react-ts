@@ -17,13 +17,19 @@ export enum Difficulty {
   HARD = 'hard',
 }
 
+export const fetchCategory = async() => {
+  const endpoint = 'https://opentdb.com/api_category.php';
+  const data = await (await fetch(endpoint)).json();
+  return data.trivia_categories;
+}
+
 export const fetchQuizQuestions = async (
   amount: number,
-  difficulty: Difficulty
+  difficulty: Difficulty,
+  category: number
 ) => {
-  const endpoint = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=multiple`;
+  const endpoint = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty${difficulty}=easy&type=multiple`
   const data = await (await fetch(endpoint)).json();
-//   console.log(data)
   return data.results.map((question: Question) => ({
     ...question,
     answers: shuffleArray([
@@ -32,3 +38,4 @@ export const fetchQuizQuestions = async (
     ])
   }));
 };
+
