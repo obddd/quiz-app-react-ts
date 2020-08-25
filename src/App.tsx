@@ -7,6 +7,8 @@ import { QuestionState, Difficulty } from './api';
 //styles
 import { GlobalStyle, Wrapper } from './App.styles';
 
+import initNotification from './firebase/firebase'
+
 export type AnswerState = {
   question: string;
   answer: string;
@@ -23,6 +25,7 @@ const TOTAL_QUESTIONS = 10;
 const RANDOM_ID = Math.floor(Math.random() * (32 - 9 + 1)) + 9;
 
 const App = () => {
+
   const [categories, setCategories] = useState<CategoryState[]>([]);
   const [category, setCategory] = useState<number>(RANDOM_ID);
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,6 +40,7 @@ const App = () => {
       setCategories(await fetchCategory());
     };
     type();
+    initNotification();
   }, [setCategories]);
 
   const startTrivia = async () => {

@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAfIcsjXi1VzDY1Or7NBB72g1FdG_od3gg',
@@ -12,4 +12,29 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-export default firebase;
+const messaging = firebase.messaging();
+
+const initNotification = () => {
+  Notification.requestPermission().then((permission) => {
+    console.log(permission);
+    if (permission === 'granted') {
+      messaging
+        .getToken()
+        .then((currentToken) => {
+          if (currentToken) {
+            console.log('Token', currentToken);
+          } else {
+            console.log('No Instance ID token available.');
+          }
+        })
+        .catch((err) => {
+          console.log('An error occurred while retrieving token. ', err);
+        });
+    } else {
+      console.log('Unable to get permission to notify.');
+    }
+  });
+};
+
+
+export default initNotification;
