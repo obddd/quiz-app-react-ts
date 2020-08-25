@@ -16,11 +16,11 @@ export type AnswerState = {
 
 type CategoryState = {
   id: number;
-  name: string
+  name: string;
 };
 
 const TOTAL_QUESTIONS = 10;
-const RANDOM_ID = Math.floor(Math.random() * (32 - 9 + 1)) + 9
+const RANDOM_ID = Math.floor(Math.random() * (32 - 9 + 1)) + 9;
 
 const App = () => {
   const [categories, setCategories] = useState<CategoryState[]>([]);
@@ -83,7 +83,7 @@ const App = () => {
   };
 
   const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    let {key} = JSON.parse(event.target.value)
+    let { key } = JSON.parse(event.target.value);
     setCategory(key);
   };
   return (
@@ -91,13 +91,15 @@ const App = () => {
       <GlobalStyle />
       <Wrapper>
         <h1>Quiz App using React with Typescript</h1>
-
         {gameOver || userAnswer.length === TOTAL_QUESTIONS ? (
           <div className="startbox">
             <select className="select" onChange={onSelect}>
               <option value="">Select Topic</option>
-              {categories.map(({id, name}) => (
-                <option key={id} value={JSON.stringify({key:id, value:name})}>
+              {categories.map(({ id, name }) => (
+                <option
+                  key={id}
+                  value={JSON.stringify({ key: id, value: name })}
+                >
                   {name}
                 </option>
               ))}
